@@ -1,0 +1,50 @@
+from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
+import time
+from lxml import html
+​
+# Launch the web browser and navigate to the Yahoo Finance webpage
+browser = webdriver.Chrome("C:\\Users\\User\\Downloads\\chromedriver_win32\\chromedriver.exe")
+browser.maximize_window()
+browser.get('https://finance.yahoo.com/')
+​
+# Find the search box and enter the stock symbol
+search_box = browser.find_element_by_xpath('//input[@placeholder="Quote Lookup"]')
+search_box.send_keys('Enter the stock symbol')
+search_box.send_keys(Keys.RETURN)
+​
+# Wait for the page to load and click on the 'Historical Data' button
+time.sleep(5)  # wait for the page to load
+#MaybeLaterButton = browser.find_element_by_xpath('//button[text()="Maybe later"]')
+#MaybeLaterButton.click()
+​
+historical_data_button = browser.find_element_by_link_text('Historical Data')
+historical_data_button.click()
+​
+# Wait for the page to load and select the 'Max' time period
+time.sleep(5)  # wait for the page to load
+time_period_select = browser.find_element_by_xpath('(//div[@role="button"])[2]')
+time_period_select.click()
+# Click on Max button
+max_time_period = browser.find_element_by_xpath('//button[@data-value="MAX"]')
+max_time_period.click()
+​
+​
+​
+# Find the table containing the historical data and extract the maximum value
+time.sleep(5)  # wait for the data table to load
+data_table = browser.find_element_by_xpath("//table[@data-test='historical-prices']")
+rows = data_table.find_elements_by_tag_name('tr')
+max_value = 0.0
+for row in rows[1:]:
+    cells = row.find_elements_by_tag_name('td')
+    if len(cells) == 7:
+        close_price = float(cells[4].text.replace(',', ''))
+        if close_price > max_value:
+            max_value = close_price
+​
+print(f"The maximum closing price for BAJFINANCE.NS is {max_value:.2f}")
+​
+# Close the web browser
+browser.quit()
+
