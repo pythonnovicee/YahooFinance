@@ -1,7 +1,7 @@
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 import time
-from lxml import html
+
 ​
 # Launch the web browser and navigate to the Yahoo Finance webpage
 browser = webdriver.Chrome("C:\\Users\\User\\Downloads\\chromedriver_win32\\chromedriver.exe")
